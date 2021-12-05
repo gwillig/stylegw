@@ -3,5 +3,5 @@ whitenoise
 psycopg2-binary
 matplotlib
 tensorflow
-PIL
+Pillow
 tensorflow_hub
