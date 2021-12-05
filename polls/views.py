@@ -3,8 +3,62 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-
+from .helper import tensor_to_image, imshow, load_img
 from .models import Choice, Question
+from django.http import FileResponse
+'=========='
+import os
+import PIL.Image
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+import tensorflow_hub as hub
+# Load compressed models from tensorflow_hub
+os.environ['TFHUB_MODEL_LOAD_FORMAT'] = 'COMPRESSED'
+'=================='
+
+def send_file(response):
+
+    # img = open('Download.png', 'rb')
+    url = [
+        "https://lh3.googleusercontent.com/HnyXa-dNoEu_ouZ_O_uuofcVNRgJ1MqCuHUTxxzlo25uAtvYXl8kZiLRtaLk8IdGSGp1cOJOhNg5sboSGCXKEwtw0Q8PyNRSinhjt6ev8ABeAonagKeLNIeWAtp52I66RXeTySYxrwE=w2400",
+    ]
+    orginal_imge = [
+        "https://lh3.googleusercontent.com/pw/AM-JKLUTeYR5V2-SfH6yO46pFU9kMMGD2t9Y0n6-9w8ln4X7yZuAR_uK02QPp-cBBaebYzVEkPQh_KGvdDYXmSOsaLcfuH2KPTTv4TUwYHjWffbB29sshldNtnS4IywZMdCTdgw0hNDWH60Lmui3FLDnzlCiDQ=w509-h679-no?authuser=0"]
+    content_image = tf.keras.utils.get_file("content_image", orginal_imge[0])
+    plt.figure(figsize=(60, 6))
+
+    content_image = load_img(content_image)
+
+    recreate = True
+    for el in url:
+        '#Check if file is from google'
+        if el.find("google") != -1:
+            'Down size image'
+            el = el.replace("w2400", "w500")
+            'Remove special characters'
+            fname = el.split("/")[-1]
+            for char in ["-", "="]:
+                fname = fname.replace(char, "_")
+            fname = fname + ".jpg"
+
+
+        else:
+            fname = el.split("/")[-1]
+        style_path = tf.keras.utils.get_file(fname, el)
+        style_image = load_img(style_path)
+
+        '#Check if style has beedn already used'
+        fname_result = "result_" + fname
+
+        hub_model = hub.load('https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/2')
+        stylized_image = hub_model(tf.constant(content_image), tf.constant(style_image))[0]
+        result = tensor_to_image(stylized_image)
+
+    response = FileResponse(result)
+
+    return response
+
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
