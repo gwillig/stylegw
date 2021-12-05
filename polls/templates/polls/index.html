@@ -1,6 +1,254 @@
-{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <script src="https://cdnjs.deepai.org/deepai.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
 
-<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+    <title>Style</title>
 
-<h1>Hello there</h1>
-<input type="file" accept="image/*" capture="camera" />
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="album.css" rel="stylesheet">
+    <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script>
+</head>
+<style>
+    .loading_screen{
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 200%;
+    background: #80808029;
+    z-index: -500;
+    }
+    .loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  margin-left: 600px;
+  margin-top: 600px;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<body>
+<header>
+    <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                    <h4 class="text-white">About</h4>
+                    <p class="text-muted">Be an artist. the ability to create a new image, known as a pastiche, based on
+                        two input images: one representing the artistic style and one representing the content.</p>
+                    <p class="text-muted"> Best regard</p>
+                    <p class="text-muted"> Gustav Willig</p>
+                </div>
+                <div class="col-sm-4 offset-md-1 py-4">
+                    <h4 class="text-white">Contact</h4>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a target="_blank" href="https://gustavwillig.com/" class="text-white">
+                                Visit my website
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://www.buymeacoffee.com/gwillig#" class="text-white">
+                                If you like me work, buy me a coffee
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                &#10026; &nbsp
+                <strong>Style</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main role="main">
+
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Style Converter</h1>
+            <p class="lead text-muted">Ever wish you could paint like Picasso or Van Gogh? Just upload the style you
+                like and an image you want to transform</p>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <strong>Style</strong>
+                        </div>
+                        <img width="100%" height="70%" id="showStyle" width="225"
+                        src="https://lh3.googleusercontent.com/HnyXa-dNoEu_ouZ_O_uuofcVNRgJ1MqCuHUTxxzlo25uAtvYXl8kZiLRtaLk8IdGSGp1cOJOhNg5sboSGCXKEwtw0Q8PyNRSinhjt6ev8ABeAonagKeLNIeWAtp52I66RXeTySYxrwE=w2400"
+                        />
+                        <div class="card-body">
+                            <p class="card-text">This style will be used to transform your image</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <input class="btn btn-sm btn-outline-secondary" type="file" accept="image/*"
+                                           capture="camera"
+                                           onchange="showStyle(event)"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <strong>Photo</strong>
+                        </div>
+                        <img width="100%" height="70%" id="showOriginal" width="225"
+                        src="https://lh3.googleusercontent.com/pw/AM-JKLUTeYR5V2-SfH6yO46pFU9kMMGD2t9Y0n6-9w8ln4X7yZuAR_uK02QPp-cBBaebYzVEkPQh_KGvdDYXmSOsaLcfuH2KPTTv4TUwYHjWffbB29sshldNtnS4IywZMdCTdgw0hNDWH60Lmui3FLDnzlCiDQ=w509-h679-no?authuser=0"
+                        />
+                        <div class="card-body">
+                            <p class="card-text">This image will be transformed</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <input class="btn btn-sm btn-outline-secondary" type="file" accept="image/*"
+                                           capture="camera"
+                                           onchange="showOriginal(event)"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <strong>Result</strong>
+                        </div>
+                        <img width="100%" height="70%" id="showResult" width="225"https://lh3.googleusercontent.com/pw/AM-JKLVUUFt5nxnyQHx4wrgMvIU8vTDzuV9TfQBJLpOYpRuumiFOhFa-2QAevMrRa1bRCiw3TfsFZVdUBWRe28i5F53kbMrsLl7QlqRMHlacAOKNFu6U_aqDnm7D9796ZaBqd6lBkR7Y_PzNOLfqzQshtddiFw=w453-h584-no?authuser=0"
+
+                         src="/>
+                        <div class="card-body">
+                            <p class="card-text">Download the image</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button type="button" class="btn btn-primary" onclick="callDeepAi()">Execute</button>
+                                <button  disabled type="button" class="btn btn-success">
+                                    <a  id="download_link" href='URL_HERE' download>D
+                                        ownload image
+                                    </a></button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+
+</main>
+<div class="loading_screen">
+    <div class="loader"></div>
+</div>
+
+<script>
+    var orginalImageFileReader= new FileReader()
+    var stylemageFileReader= new FileReader()
+    var showOriginal = function (event) {
+        orginalImage = document.getElementById('showOriginal');
+        orginalImage.src = URL.createObjectURL(event.target.files[0]);
+        orginalImageFileReader.readAsDataURL(event.target.files[0])
+
+    };
+    var showStyle = function (event) {
+        styleImage = document.getElementById('showStyle');
+        styleImage.src = URL.createObjectURL(event.target.files[0]);
+        stylemageFileReader.readAsDataURL(event.target.files[0])
+    };
+</script>
+
+<script>
+const url = "https://api.football-data.org/v2/matches";
+fetch(url, {
+  method: "GET",
+  headers: {
+    "X-Auth-Token": "ef72570ff371408f9668e414353b7b2e"
+  }
+})
+
+
+deepai.setApiKey('d8d8c0e7-de24-4234-b5f2-2ca8dc9ad14c');
+
+async function callDeepAi() {
+    document.querySelector(".loading_screen").style.zIndex=500
+    var resp = await deepai.callStandardApi("fast-style-transfer", {
+            content: orginalImageFileReader.result,
+            style:  stylemageFileReader.result,
+    });
+    console.log(resp)
+    resultImage = document.getElementById('showResult');
+    download_link = document.getElementById('download_link');
+    download_link.href = resp.output_url
+    resultImage.src = resp.output_url
+    document.querySelector(".loading_screen").style.zIndex=-500
+
+
+}
+
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="/docs/4.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
