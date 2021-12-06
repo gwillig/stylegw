@@ -38,11 +38,18 @@
     <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script>
 </head>
 <style>
+    img{
+        width:50%;
+        height:70%
+    }
     .loading_screen{
     position: absolute;
-    top: 0px;
-    width: 100%;
-    height: 200%;
+    top: 300%;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     background: #80808029;
     z-index: -500;
     }
@@ -54,8 +61,6 @@
   height: 120px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
-  margin-left: 600px;
-  margin-top: 600px;
 }
 
 /* Safari */
@@ -131,9 +136,8 @@
                         <div class="card-header">
                             <strong>Style</strong>
                         </div>
-                        <img width="100%" height="70%" id="showStyle" width="225"
-                        src="https://lh3.googleusercontent.com/HnyXa-dNoEu_ouZ_O_uuofcVNRgJ1MqCuHUTxxzlo25uAtvYXl8kZiLRtaLk8IdGSGp1cOJOhNg5sboSGCXKEwtw0Q8PyNRSinhjt6ev8ABeAonagKeLNIeWAtp52I66RXeTySYxrwE=w2400"
-                        />
+                        <img id="showStyle" width="225"
+                        src="https://lh3.googleusercontent.com/pw/AM-JKLXPewu4YrGgQveWenNc3cQ80mkQ8jdo1SXDp0Fw5bJOw6eQGQdvfy6moo9573w4uG431g_jYtDgFjpiW29vdzrXgp10aHLFHXiRmClCTHIxPADwKcj56DCDuE4M55Ux23tMmEPX7AmYeRHECGIMCHaZXQ=w678-h903-no?authuser=0"/>
                         <div class="card-body">
                             <p class="card-text">This style will be used to transform your image</p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -151,9 +155,8 @@
                         <div class="card-header">
                             <strong>Photo</strong>
                         </div>
-                        <img width="100%" height="70%" id="showOriginal" width="225"
-                        src="https://lh3.googleusercontent.com/pw/AM-JKLUTeYR5V2-SfH6yO46pFU9kMMGD2t9Y0n6-9w8ln4X7yZuAR_uK02QPp-cBBaebYzVEkPQh_KGvdDYXmSOsaLcfuH2KPTTv4TUwYHjWffbB29sshldNtnS4IywZMdCTdgw0hNDWH60Lmui3FLDnzlCiDQ=w509-h679-no?authuser=0"
-                        />
+                        <img id="showOriginal" width="225"
+                        src="https://lh3.googleusercontent.com/pw/AM-JKLWcVc3RSxJyH3_Es19VoFjIBmNpwZS1QitkOd61xVNkpG7vcUjP8muRHTtJjfEWFC3GromI8ENb0oD53m4TYhbI6zt4u4nV625khfPKt7CP-6WQYWYnj09XpHBL-qt5zWl1THa5bYswRwfOiumiaonJug=w678-h903-no?authuser=0"/>
                         <div class="card-body">
                             <p class="card-text">This image will be transformed</p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -171,9 +174,9 @@
                         <div class="card-header">
                             <strong>Result</strong>
                         </div>
-                        <img width="100%" height="70%" id="showResult" width="225"https://lh3.googleusercontent.com/pw/AM-JKLVUUFt5nxnyQHx4wrgMvIU8vTDzuV9TfQBJLpOYpRuumiFOhFa-2QAevMrRa1bRCiw3TfsFZVdUBWRe28i5F53kbMrsLl7QlqRMHlacAOKNFu6U_aqDnm7D9796ZaBqd6lBkR7Y_PzNOLfqzQshtddiFw=w453-h584-no?authuser=0"
-
-                         src="/>
+                        <img id="showResult" width="225"
+                             src="https://lh3.googleusercontent.com/pw/AM-JKLVdY8TOIiUyMK8Xy-7g_Ld3IHCfPzp6mvHmDT11z0BzvWEBPa2MOLAZpVV3oRXuuPSwGOiEVG-bjPfvtuiSd6Wd3kyU0lS8UcpYxs-PWLUxiQiLExmIwMCk_PX7msyV0q2-dojvXaxPl4rjkgspNQ3IKA=w512-h680-no?authuser=0"
+                             />
                         <div class="card-body">
                             <p class="card-text">Download the image</p>
                             <div class="d-flex justify-content-between align-items-center">
@@ -193,7 +196,8 @@
         </div>
 
 </main>
-<div class="loading_screen">
+
+<div class="loading_screen ">
     <div class="loader"></div>
 </div>
 
@@ -226,10 +230,26 @@ fetch(url, {
 deepai.setApiKey('d8d8c0e7-de24-4234-b5f2-2ca8dc9ad14c');
 
 async function callDeepAi() {
+    //Define variables
+    let content
+    let style
     document.querySelector(".loading_screen").style.zIndex=500
+    // Check if an image was upload or the example image should be use
+    if (orginalImageFileReader.readyState==0){
+       content = document.getElementById('showOriginal')
+    }
+    else{
+        content = orginalImageFileReader.result
+    }
+    if (stylemageFileReader.readyState==0){
+       style = document.getElementById('showStyle')
+    }
+    else{
+        style = stylemageFileReader.result
+    }
     var resp = await deepai.callStandardApi("fast-style-transfer", {
-            content: orginalImageFileReader.result,
-            style:  stylemageFileReader.result,
+            content: content,
+            style:  style,
     });
     console.log(resp)
     resultImage = document.getElementById('showResult');
@@ -238,7 +258,6 @@ async function callDeepAi() {
     resultImage.src = resp.output_url
     document.querySelector(".loading_screen").style.zIndex=-500
 
-
 }
 
 </script>
@@ -246,9 +265,6 @@ async function callDeepAi() {
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-<script src="/docs/4.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
-        crossorigin="anonymous"></script>
 
 </body>
 </html>
